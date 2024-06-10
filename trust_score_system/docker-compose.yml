@@ -1,0 +1,33 @@
+version: '3'
+services:
+  auth_service:
+    build:
+      context: ./auth_service
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+  
+  behavior_service:
+    build:
+      context: ./behavior_service
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+  
+  trust_service:
+    build:
+      context: ./trust_service
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5003"
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - auth_service
+      - behavior_service
+      - trust_service
