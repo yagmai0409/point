@@ -7,15 +7,21 @@ app = Flask(__name__)
 def calculate():
     data = request.json
     user_id = data['user_id']
+    ip_address = data['ip_address']
+    mac_address = data['mac_address']
+    login_time = data['login_time']
     
-    # 假設基本的信任分數
     base_trust_score = 100
     
-    # 獲取風險分數
-    response = requests.get(f'http://behavior_service:5002/analyze/{user_id}')
+    analysis_data = {
+        'user_id': user_id,
+        'ip_address': ip_address,
+        'mac_address': mac_address,
+        'login_time': login_time
+    }
+    response = requests.post('http://behavior_service:5002/analyze', json=analysis_data)
     risk_score = response.json().get('risk_score', 0)
     
-    # 計算最終的信任分數
     trust_score = base_trust_score - risk_score
     return jsonify({'user_id': user_id, 'trust_score': trust_score})
 
