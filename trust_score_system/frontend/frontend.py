@@ -6,7 +6,6 @@ app = Flask(__name__)
 @app.route('/trust_score', methods=['POST'])
 def trust_score():
     auth_data = request.json
-    
     auth_response = requests.post('http://auth_service:5001/authenticate', json=auth_data)
     if auth_response.status_code != 200:
         return jsonify({'error': 'Authentication failed'}), 401
@@ -16,7 +15,6 @@ def trust_score():
     mac_address = auth_data.get('mac_address')
     login_time = auth_data.get('login_time')
     
-   
     trust_data = {
         'user_id': user_id,
         'ip_address': ip_address,
